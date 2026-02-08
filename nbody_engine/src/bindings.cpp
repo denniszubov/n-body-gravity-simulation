@@ -6,7 +6,7 @@ int add(int i, int j) {
     return i + j;
 }
 
-PYBIND11_MODULE(nbody_engine, m) {
-    m.doc() = "example addition module";
+PYBIND11_MODULE(nbody_core, m) {
+    m.doc() = "N-body gravity simulation core";
     m.def("add", &add, "Simple addition");
 }

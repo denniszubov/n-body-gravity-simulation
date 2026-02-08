@@ -19,4 +19,4 @@ clang++ -O3 -std=c++20 -shared -fPIC \
   $($PYTHON -m pybind11 --includes) \
   nbody_engine/src/bindings.cpp \
   -undefined dynamic_lookup \
-  -o "nbody_engine${EXT_SUFFIX}"
+  -o "nbody_core${EXT_SUFFIX}"

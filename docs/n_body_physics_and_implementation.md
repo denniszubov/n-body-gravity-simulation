@@ -47,8 +47,8 @@ $$F_x = F \cdot \hat{u}_x, \quad F_y = F \cdot \hat{u}_y$$
 
 The total acceleration of body $i$ is the sum of contributions from all other bodies:
 
-$$a_{x_i} = \sum_{j \neq i} \frac{F_{x_{ij}}}{m_i}$$
-$$a_{y_i} = \sum_{j \neq i} \frac{F_{y_{ij}}}{m_i}$$
+$$a_{x_i} = \frac{1}{m_i} \sum_{j \neq i} F_{x_{ij}}$$
+$$a_{y_i} = \frac{1}{m_i} \sum_{j \neq i} F_{y_{ij}}$$
 
 This double loop is $O(N^2)$ and dominates runtime.
 
@@ -61,17 +61,23 @@ Leapfrog is used instead of Euler to maintain numerical stability.
 ### Kick-Drift-Kick form
 
 1. Half velocity update:
+
 $$v_x^{n+1/2} = v_x^n + \frac{1}{2} a_x^n \Delta t$$
+
 $$v_y^{n+1/2} = v_y^n + \frac{1}{2} a_y^n \Delta t$$
 
 2. Position update:
+
 $$x^{n+1} = x^n + v_x^{n+1/2} \Delta t$$
+
 $$y^{n+1} = y^n + v_y^{n+1/2} \Delta t$$
 
 3. Recompute acceleration using updated positions
 
 4. Final half velocity update:
+
 $$v_x^{n+1} = v_x^{n+1/2} + \frac{1}{2} a_x^{n+1} \Delta t$$
+
 $$v_y^{n+1} = v_y^{n+1/2} + \frac{1}{2} a_y^{n+1} \Delta t$$  
 
 ---
@@ -90,12 +96,15 @@ $\varepsilon$ is a small constant relative to system scale.
 
 Main simulation loop:
 
+```python
 for step in timesteps:
     compute_accelerations()
     leapfrog_update()
+```
 
 Acceleration computation:
 
+```python
 for i in bodies:
     ax[i] = 0
     ay[i] = 0
@@ -104,6 +113,7 @@ for i in bodies:
         compute dx, dy, r
         compute force
         accumulate ax[i], ay[i]
+```
 
 ---
 

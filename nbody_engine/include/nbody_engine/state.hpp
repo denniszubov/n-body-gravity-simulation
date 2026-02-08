@@ -33,8 +33,6 @@ struct State {
         acceleration.resize(n);
         mass.resize(n);
     }
-}
-
-
+};
 
 }

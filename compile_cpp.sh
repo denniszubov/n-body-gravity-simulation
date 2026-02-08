@@ -17,6 +17,7 @@ echo "Using EXT_SUFFIX: $EXT_SUFFIX"
 
 clang++ -O3 -std=c++20 -shared -fPIC \
   $($PYTHON -m pybind11 --includes) \
-  nbody_engine/src/bindings.cpp \
+  -I nbody_engine/include \
+  nbody_engine/src/*.cpp \
   -undefined dynamic_lookup \
   -o "nbody_core${EXT_SUFFIX}"

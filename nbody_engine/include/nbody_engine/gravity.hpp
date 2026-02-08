@@ -4,6 +4,6 @@
 
 namespace nbody_engine {
 
-void compute_acceleration(nbody_engine::State& state, double G, double eps);
+void compute_acceleration(nbody_engine::State& state, real G, real eps);
 
 }

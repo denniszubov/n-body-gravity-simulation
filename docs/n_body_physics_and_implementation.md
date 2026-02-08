@@ -72,7 +72,11 @@ $$x^{n+1} = x^n + v_x^{n+1/2} \Delta t$$
 
 $$y^{n+1} = y^n + v_y^{n+1/2} \Delta t$$
 
-3. Recompute acceleration using updated positions
+3. Recompute acceleration using updated positions:
+
+$$a_x^{n+1} = \frac{1}{m_i} \sum_{j \neq i} F_{x_{ij}}(x^{n+1}, y^{n+1})$$
+
+$$a_y^{n+1} = \frac{1}{m_i} \sum_{j \neq i} F_{y_{ij}}(x^{n+1}, y^{n+1})$$
 
 4. Final half velocity update:
 

@@ -10,12 +10,12 @@ void compute_acceleration(nbody_engine::State& state, real G, real eps) {
         real F_x_total = 0.0;
         real F_y_total = 0.0;
 
-        const Vec2 current_position = state.position[i];
+        const Vec2& current_position = state.position[i];
         const real current_mass = state.mass[i];
 
         for (std::size_t j = 0; j < state.size(); ++j) {
             if (i == j) continue;
-            const Vec2 other_position = state.position[j];
+            const Vec2& other_position = state.position[j];
             const real other_mass = state.mass[j];
 
             // compute dx, dy, r
@@ -41,7 +41,6 @@ void compute_acceleration(nbody_engine::State& state, real G, real eps) {
         state.acceleration[i].x = F_x_total / current_mass;
         state.acceleration[i].y = F_y_total / current_mass;
     }
-
 }
 
 }

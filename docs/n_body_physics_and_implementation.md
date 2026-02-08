@@ -6,59 +6,56 @@ This document describes the physics, math, and coding concepts required to build
 
 ## 1. Physical Model
 
-We model a system of N point masses interacting via Newtonian gravity.
+We model a system of $N$ point masses interacting via Newtonian gravity.
 
-Each body i has:
+Each body $i$ has:
 
-- mass: mi
-- position: (xi, yi) or (xi, yi, zi)
-- velocity: (vxi, vyi)
-- acceleration: (axi, ayi)
+- mass: $m_i$
+- position: $(x_i, y_i)$ or $(x_i, y_i, z_i)$
+- velocity: $(v_{x_i}, v_{y_i})$
+- acceleration: $(a_{x_i}, a_{y_i})$
 
-The system evolves in discrete time steps of size dt.
+The system evolves in discrete time steps of size $\Delta t$.
 
 ---
 
-## 2. Newton’s Law of Gravitation
+## 2. Newton's Law of Gravitation
 
-For two bodies i and j:
+For two bodies $i$ and $j$:
 
-dx = xj - xi  
-dy = yj - yi  
+$$\Delta x = x_j - x_i$$
+$$\Delta y = y_j - y_i$$
 
 Distance with softening:
 
-r = sqrt(dx*dx + dy*dy + eps*eps)
+$$r = \sqrt{(\Delta x)^2 + (\Delta y)^2 + \varepsilon^2}$$
 
 Gravitational force magnitude:
 
-F = G * mi * mj / (r*r)
+$$F = \frac{G \cdot m_i \cdot m_j}{r^2}$$
 
 Force direction (unit vector):
 
-ux = dx / r  
-uy = dy / r  
+$$\hat{u}_x = \frac{\Delta x}{r}, \quad \hat{u}_y = \frac{\Delta y}{r}$$
 
-Force components on body i due to j:
+Force components on body $i$ due to $j$:
 
-Fx = F * ux  
-Fy = F * uy  
+$$F_x = F \cdot \hat{u}_x, \quad F_y = F \cdot \hat{u}_y$$
 
 ---
-
 ## 3. Acceleration (Newton’s Second Law)
 
-Acceleration of body i:
+Acceleration of body $i$:
 
-axi += Fx / mi  
-ayi += Fy / mi  
+$$a_{x_i} \mathrel{+}= \frac{F_x}{m_i}$$
+$$a_{y_i} \mathrel{+}= \frac{F_y}{m_i}$$
 
 Sum contributions from all other bodies:
 
-axi = sum over j != i of (Fx_ij / mi)  
-ayi = sum over j != i of (Fy_ij / mi)  
+$$a_{x_i} = \sum_{j \neq i} \frac{F_{x_{ij}}}{m_i}$$
+$$a_{y_i} = \sum_{j \neq i} \frac{F_{y_{ij}}}{m_i}$$
 
-This double loop is O(N²) and dominates runtime.
+This double loop is $O(N^2)$ and dominates runtime.
 
 ---
 
@@ -69,28 +66,28 @@ Leapfrog is used instead of Euler to maintain numerical stability.
 ### Kick-Drift-Kick form
 
 1. Half velocity update:
-vx += 0.5 * ax * dt  
-vy += 0.5 * ay * dt  
+$$v_x \mathrel{+}= \frac{1}{2} a_x \Delta t$$
+$$v_y \mathrel{+}= \frac{1}{2} a_y \Delta t$$
 
 2. Position update:
-x += vx * dt  
-y += vy * dt  
+$$x \mathrel{+}= v_x \Delta t$$
+$$y \mathrel{+}= v_y \Delta t$$
 
 3. Recompute acceleration using updated positions
 
 4. Final half velocity update:
-vx += 0.5 * ax * dt  
-vy += 0.5 * ay * dt  
+$$v_x \mathrel{+}= \frac{1}{2} a_x \Delta t$$
+$$v_y \mathrel{+}= \frac{1}{2} a_y \Delta t$$  
 
 ---
 
 ## 5. Softening Parameter
 
-To avoid singularities when r approaches zero:
+To avoid singularities when $r$ approaches zero:
 
-r² = dx*dx + dy*dy + eps*eps
+$$r^2 = (\Delta x)^2 + (\Delta y)^2 + \varepsilon^2$$
 
-eps is a small constant relative to system scale.
+$\varepsilon$ is a small constant relative to system scale.
 
 ---
 
@@ -127,8 +124,8 @@ for i in bodies:
 
 ## 8. Scaling and Optimization (Optional)
 
-Naive approach: O(N²)  
-Optimized approach: Barnes-Hut tree O(N log N)
+Naive approach: $O(N^2)$  
+Optimized approach: Barnes-Hut tree $O(N \log N)$
 
 ---
 

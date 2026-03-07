@@ -1,5 +1,3 @@
-"""Preset initial conditions for the N-body simulator."""
-
 import numpy as np
 from nbody._nbody_core import Config, Simulator
 

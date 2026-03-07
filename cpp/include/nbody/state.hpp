@@ -19,6 +19,7 @@ struct State {
         : position(n), velocity(n), acceleration(n), mass(n) {}
 
     std::size_t size() const {
+        // all vectors are sized together, so we can return the size of any vector
         return position.size();
     }
 

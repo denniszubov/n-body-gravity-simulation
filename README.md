@@ -2,7 +2,7 @@
 
 A real-time gravitational N-body simulation with a C++ physics engine and a Streamlit web interface.
 
-<!-- TODO: Add a GIF of the simulation running -->
+![N-Body Gravity Simulation](assets/n-body-gravity-simulator.gif)
 
 <!-- TODO: Uncomment when deployed -->
 <!-- **[Live Demo](https://your-app.streamlit.app)** -->

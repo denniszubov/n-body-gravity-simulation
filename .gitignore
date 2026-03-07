@@ -173,3 +173,6 @@ Thumbs.db
 # Logs
 *.log
 logs/
+
+# scikit-build-core
+_skbuild/

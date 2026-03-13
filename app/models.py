@@ -22,6 +22,7 @@ class SimState(BaseModel):
     t: float
     n: int
     positions: list[list[float]]
+    velocities: list[list[float]]
     masses: list[float]
     energy: EnergyInfo
     initial_energy: float

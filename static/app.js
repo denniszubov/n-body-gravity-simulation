@@ -8,6 +8,7 @@ const ctx = canvas.getContext("2d");
 let presets = [];
 let activePreset = null;
 let positions = [];
+let velocities = [];
 let masses = [];
 let viewRange = 8.0;
 let running = false;
@@ -84,24 +85,29 @@ function worldToScreen(wx, wy) {
 // ── Particle rendering ─────────────────────────────────
 
 function particleRadius(mass) {
-  // Log scale: heavy bodies bigger, light bodies still visible
-  return Math.max(1.5, Math.min(12, 1.5 + Math.log10(mass + 1) * 3.5));
+  return Math.max(1.5, Math.min(10, 1.5 + Math.log10(mass + 1) * 3));
 }
 
-function particleColor(mass, maxMass) {
-  // Heavy bodies glow warm white, light bodies cool blue
+function massHue(mass, maxMass) {
+  // Map mass to a hue: light=violet(270) → mid=cyan(190) → heavy=amber(35) → star=warm white
   const t = Math.log10(mass + 1) / Math.log10(maxMass + 1);
-  const r = Math.round(140 + t * 115);
-  const g = Math.round(180 + t * 75);
-  const b = Math.round(230 + t * 25);
-  return `rgb(${r},${g},${b})`;
+  if (t > 0.85) return { r: 255, g: 240, b: 220 }; // stars: warm white
+  if (t > 0.5) {
+    const s = (t - 0.5) / 0.35;
+    return { r: Math.round(80 + s * 175), g: Math.round(180 + s * 40), b: Math.round(220 - s * 140) };
+  }
+  if (t > 0.15) {
+    const s = (t - 0.15) / 0.35;
+    return { r: Math.round(60 + s * 20), g: Math.round(140 + s * 40), b: Math.round(230 - s * 10) };
+  }
+  // lightest: cool violet-blue
+  return { r: 120, g: 130, b: 240 };
 }
 
 function drawParticles() {
   const cw = window.innerWidth;
   const ch = window.innerHeight;
 
-  // Clear with deep black
   ctx.fillStyle = "#000000";
   ctx.fillRect(0, 0, cw, ch);
 
@@ -109,19 +115,34 @@ function drawParticles() {
 
   const maxMass = Math.max(...masses);
 
-  // Draw glow layer first (back to front: heaviest last)
+  // Compute speeds for velocity-based brightness
+  let maxSpeed = 0;
+  const speeds = new Float64Array(positions.length);
+  for (let i = 0; i < positions.length; i++) {
+    if (velocities.length > i) {
+      const vx = velocities[i][0], vy = velocities[i][1];
+      speeds[i] = Math.sqrt(vx * vx + vy * vy);
+      if (speeds[i] > maxSpeed) maxSpeed = speeds[i];
+    }
+  }
+  if (maxSpeed === 0) maxSpeed = 1;
+
+  // Draw glow layer
   for (let i = 0; i < positions.length; i++) {
     const [wx, wy] = positions[i];
     const [sx, sy] = worldToScreen(wx, wy);
     const m = masses[i];
     const r = particleRadius(m);
-    const glowR = r * 4;
-    const color = particleColor(m, maxMass);
+    const { r: cr, g: cg, b: cb } = massHue(m, maxMass);
 
-    // Outer glow
+    // Velocity modulates glow intensity and size
+    const vt = Math.min(speeds[i] / maxSpeed, 1);
+    const glowAlpha = 0.12 + vt * 0.2;
+    const glowR = r * (2.5 + vt * 2);
+
     const glow = ctx.createRadialGradient(sx, sy, 0, sx, sy, glowR);
-    glow.addColorStop(0, color.replace("rgb", "rgba").replace(")", ",0.25)"));
-    glow.addColorStop(0.4, color.replace("rgb", "rgba").replace(")", ",0.06)"));
+    glow.addColorStop(0, `rgba(${cr},${cg},${cb},${glowAlpha})`);
+    glow.addColorStop(0.5, `rgba(${cr},${cg},${cb},${glowAlpha * 0.2})`);
     glow.addColorStop(1, "rgba(0,0,0,0)");
 
     ctx.beginPath();
@@ -136,13 +157,19 @@ function drawParticles() {
     const [sx, sy] = worldToScreen(wx, wy);
     const m = masses[i];
     const r = particleRadius(m);
-    const color = particleColor(m, maxMass);
+    const { r: cr, g: cg, b: cb } = massHue(m, maxMass);
 
-    // Bright core
+    // Velocity brightens the core
+    const vt = Math.min(speeds[i] / maxSpeed, 1);
+    const bright = 0.6 + vt * 0.4;
+    const wr = Math.min(255, Math.round(cr * bright + 255 * vt * 0.3));
+    const wg = Math.min(255, Math.round(cg * bright + 255 * vt * 0.2));
+    const wb = Math.min(255, Math.round(cb * bright + 255 * vt * 0.1));
+
     const core = ctx.createRadialGradient(sx, sy, 0, sx, sy, r);
-    core.addColorStop(0, "#ffffff");
-    core.addColorStop(0.3, color);
-    core.addColorStop(1, color.replace("rgb", "rgba").replace(")", ",0.4)"));
+    core.addColorStop(0, `rgb(${wr},${wg},${wb})`);
+    core.addColorStop(0.4, `rgb(${cr},${cg},${cb})`);
+    core.addColorStop(1, `rgba(${cr},${cg},${cb},0.3)`);
 
     ctx.beginPath();
     ctx.arc(sx, sy, r, 0, Math.PI * 2);
@@ -165,6 +192,7 @@ requestAnimationFrame(renderLoop);
 function updateStats(state) {
   simTime = state.t;
   positions = state.positions;
+  velocities = state.velocities;
   masses = state.masses;
 
   els.statTime.textContent = state.t.toFixed(4);

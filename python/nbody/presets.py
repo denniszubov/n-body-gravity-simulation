@@ -150,22 +150,20 @@ def solar_system(
     G: float = 1.0,
     eps: float = 0.001,
 ) -> Simulator:
-    """Our solar system with real mass ratios and orbital distances (AU)."""
+    """Our solar system with real mass ratios. Sqrt-scaled distances for visibility."""
     sun_mass = 10000.0
-
-    # (distance AU, mass scaled so Sun=10000 matches real Sun/planet ratios)
-    # Real ratio: Sun is 332,946 Earth masses, so 1 Earth mass = 10000/332946
     earth_mass = sun_mass / 332946.0
+
+    # (real AU, mass in earth masses)
     planet_data = [
-        # (dist AU, mass, name for reference)
-        (0.387, 0.0553 * earth_mass),   # Mercury
-        (0.723, 0.815 * earth_mass),    # Venus
-        (1.000, 1.000 * earth_mass),    # Earth
-        (1.524, 0.107 * earth_mass),    # Mars
-        (5.203, 317.8 * earth_mass),    # Jupiter
-        (9.537, 95.16 * earth_mass),    # Saturn
-        (19.19, 14.54 * earth_mass),    # Uranus
-        (30.07, 17.15 * earth_mass),    # Neptune
+        (0.387, 0.0553),    # Mercury
+        (0.723, 0.815),     # Venus
+        (1.000, 1.000),     # Earth
+        (1.524, 0.107),     # Mars
+        (5.203, 317.8),     # Jupiter
+        (9.537, 95.16),     # Saturn
+        (19.19, 14.54),     # Uranus
+        (30.07, 17.15),     # Neptune
     ]
 
     n = len(planet_data) + 1
@@ -175,11 +173,14 @@ def solar_system(
 
     masses[0] = sun_mass
 
-    for i, (dist, mass) in enumerate(planet_data, start=1):
+    for i, (au, m_earth) in enumerate(planet_data, start=1):
+        # Sqrt-scaled distance spreads inner planets for visibility
+        dist = np.sqrt(au) * 3.0
         angle = (i - 1) * (2.0 * np.pi / len(planet_data))
         positions[i] = [dist * np.cos(angle), dist * np.sin(angle)]
+        # Orbital velocity from actual distance (preserves Kepler ratios)
         v_circ = np.sqrt(G * sun_mass / dist)
         velocities[i] = [-v_circ * np.sin(angle), v_circ * np.cos(angle)]
-        masses[i] = mass
+        masses[i] = m_earth * earth_mass
 
     return Simulator(Config(G=G, eps=eps), positions, velocities, masses)

@@ -45,7 +45,7 @@ PRESETS = {
         name="solar_system",
         label="Solar System",
         default_n_bodies=9,
-        view_range=35.0,
+        view_range=20.0,
         has_n_bodies=False,
         has_seed=False,
     ),
@@ -92,6 +92,7 @@ class SimService:
     def _build_state(self) -> SimState:
         sim = self.sim
         pos = sim.positions()
+        vel = sim.velocities()
         masses = sim.masses()
         ke = sim.kinetic_energy()
         pe = sim.potential_energy()
@@ -102,6 +103,7 @@ class SimService:
             t=self.elapsed_time,
             n=sim.n,
             positions=pos.tolist(),
+            velocities=vel.tolist(),
             masses=masses.tolist(),
             energy=EnergyInfo(kinetic=ke, potential=pe, total=total_e),
             initial_energy=self.initial_energy,

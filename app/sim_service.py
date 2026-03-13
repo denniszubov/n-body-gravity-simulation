@@ -12,7 +12,7 @@ PRESETS = {
     "galaxy_collision": PresetInfo(
         name="galaxy_collision",
         label="Galaxy Collision",
-        default_n_bodies=160,
+        default_n_bodies=80,
         view_range=12.0,
         has_n_bodies=True,
         has_seed=True,
@@ -20,7 +20,7 @@ PRESETS = {
     "random_disk": PresetInfo(
         name="random_disk",
         label="Random Disk",
-        default_n_bodies=200,
+        default_n_bodies=100,
         view_range=8.0,
         has_n_bodies=True,
         has_seed=True,
@@ -52,8 +52,8 @@ PRESETS = {
 }
 
 FACTORIES = {
-    "galaxy_collision": lambda n_bodies=160, seed=42, **_kw: galaxy_collision(n=n_bodies, seed=seed),
-    "random_disk": lambda n_bodies=200, seed=42, **_kw: random_disk(n=n_bodies, seed=seed),
+    "galaxy_collision": lambda n_bodies=80, seed=42, **_kw: galaxy_collision(n=n_bodies, seed=seed),
+    "random_disk": lambda n_bodies=100, seed=42, **_kw: random_disk(n=n_bodies, seed=seed),
     "figure_eight": lambda **_kw: figure_eight(),
     "binary_star_planets": lambda **_kw: binary_star_planets(),
     "solar_system": lambda **_kw: solar_system(),

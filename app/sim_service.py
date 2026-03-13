@@ -15,6 +15,7 @@ PRESETS = {
         default_n_bodies=160,
         view_range=12.0,
         has_n_bodies=True,
+        has_seed=True,
     ),
     "random_disk": PresetInfo(
         name="random_disk",
@@ -22,6 +23,7 @@ PRESETS = {
         default_n_bodies=200,
         view_range=8.0,
         has_n_bodies=True,
+        has_seed=True,
     ),
     "figure_eight": PresetInfo(
         name="figure_eight",
@@ -29,6 +31,7 @@ PRESETS = {
         default_n_bodies=3,
         view_range=2.0,
         has_n_bodies=False,
+        has_seed=False,
     ),
     "binary_star_planets": PresetInfo(
         name="binary_star_planets",
@@ -36,6 +39,7 @@ PRESETS = {
         default_n_bodies=6,
         view_range=16.0,
         has_n_bodies=False,
+        has_seed=False,
     ),
     "solar_system": PresetInfo(
         name="solar_system",
@@ -43,6 +47,7 @@ PRESETS = {
         default_n_bodies=9,
         view_range=35.0,
         has_n_bodies=False,
+        has_seed=False,
     ),
 }
 

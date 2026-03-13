@@ -36,3 +36,4 @@ class PresetInfo(BaseModel):
     default_n_bodies: int
     view_range: float
     has_n_bodies: bool
+    has_seed: bool

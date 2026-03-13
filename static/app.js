@@ -22,6 +22,7 @@ const els = {
   nBodies: document.getElementById("n-bodies"),
   nBodiesGroup: document.getElementById("n-bodies-group"),
   seed: document.getElementById("seed"),
+  seedGroup: document.getElementById("seed-group"),
   dt: document.getElementById("dt"),
   stepsPerFrame: document.getElementById("steps-per-frame"),
   btnStart: document.getElementById("btn-start"),
@@ -254,6 +255,7 @@ async function createSim() {
 function updatePresetUI() {
   const p = presets.find((p) => p.name === els.preset.value);
   els.nBodiesGroup.style.display = p && p.has_n_bodies ? "block" : "none";
+  els.seedGroup.style.display = p && p.has_seed ? "block" : "none";
 }
 
 // ── Init ───────────────────────────────────────────────

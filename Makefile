@@ -4,7 +4,7 @@ build:
 	pip install -e ".[app,dev]"
 
 run:
-	streamlit run app/app.py
+	uvicorn app.main:app --reload
 
 test:
 	pytest tests/ -v

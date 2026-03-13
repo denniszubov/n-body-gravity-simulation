@@ -1,13 +1,20 @@
-from nbody import Simulator, two_body_orbit, random_disk, solar_system
+from nbody import (
+    Simulator,
+    random_disk,
+    figure_eight,
+    galaxy_collision,
+    binary_star_planets,
+    solar_system,
+)
 from app.models import SimState, EnergyInfo, PresetInfo
 
 PRESETS = {
-    "two_body_orbit": PresetInfo(
-        name="two_body_orbit",
-        label="Two-Body Orbit",
-        default_n_bodies=2,
-        view_range=3.0,
-        has_n_bodies=False,
+    "galaxy_collision": PresetInfo(
+        name="galaxy_collision",
+        label="Galaxy Collision",
+        default_n_bodies=160,
+        view_range=12.0,
+        has_n_bodies=True,
     ),
     "random_disk": PresetInfo(
         name="random_disk",
@@ -16,18 +23,34 @@ PRESETS = {
         view_range=8.0,
         has_n_bodies=True,
     ),
+    "figure_eight": PresetInfo(
+        name="figure_eight",
+        label="Figure-8 Three-Body",
+        default_n_bodies=3,
+        view_range=2.0,
+        has_n_bodies=False,
+    ),
+    "binary_star_planets": PresetInfo(
+        name="binary_star_planets",
+        label="Binary Star + Planets",
+        default_n_bodies=6,
+        view_range=16.0,
+        has_n_bodies=False,
+    ),
     "solar_system": PresetInfo(
         name="solar_system",
         label="Solar System",
-        default_n_bodies=7,
-        view_range=16.0,
+        default_n_bodies=9,
+        view_range=35.0,
         has_n_bodies=False,
     ),
 }
 
 FACTORIES = {
-    "two_body_orbit": lambda **_kw: two_body_orbit(),
+    "galaxy_collision": lambda n_bodies=160, seed=42, **_kw: galaxy_collision(n=n_bodies, seed=seed),
     "random_disk": lambda n_bodies=200, seed=42, **_kw: random_disk(n=n_bodies, seed=seed),
+    "figure_eight": lambda **_kw: figure_eight(),
+    "binary_star_planets": lambda **_kw: binary_star_planets(),
     "solar_system": lambda **_kw: solar_system(),
 }
 

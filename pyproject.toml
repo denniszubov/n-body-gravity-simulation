@@ -13,17 +13,19 @@ dependencies = [
 
 [project.optional-dependencies]
 app = [
-    "streamlit>=1.30",
-    "plotly>=5.18",
+    "streamlit>=1.55",
+    "plotly>=6.0",
+    "orjson>=3.9",
 ]
 dev = [
     "pytest>=7.0",
 ]
 
 [tool.scikit-build]
+minimum-version = "build-system.requires"
 wheel.packages = ["python/nbody"]
 cmake.build-type = "Release"
-cmake.minimum-version = "3.21"
+cmake.version = ">=3.21"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -256,6 +256,7 @@ function updatePresetUI() {
   const p = presets.find((p) => p.name === els.preset.value);
   els.nBodiesGroup.style.display = p && p.has_n_bodies ? "block" : "none";
   els.seedGroup.style.display = p && p.has_seed ? "block" : "none";
+  if (p) els.nBodies.value = p.default_n_bodies;
 }
 
 // ── Init ───────────────────────────────────────────────

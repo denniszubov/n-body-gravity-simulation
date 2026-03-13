@@ -3,7 +3,7 @@ from nbody._nbody_core import Config, Simulator
 
 
 def random_disk(
-    n: int = 200,
+    n: int = 100,
     radius: float = 5.0,
     central_mass: float = 100.0,
     body_mass: float = 0.01,
@@ -57,7 +57,7 @@ def figure_eight(
 
 
 def galaxy_collision(
-    n: int = 160,
+    n: int = 80,
     G: float = 1.0,
     eps: float = 0.15,
     seed: int = 42,

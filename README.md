@@ -2,10 +2,11 @@
 
 A real-time gravitational N-body simulation with a C++ physics engine, Python API, and an interactive browser frontend.
 
-![N-Body Gravity Simulation](assets/n-body-gravity-simulator.gif)
+![Colliding Galaxies](assets/colliding_galaxies_nbody.gif)
+![Spinning Disk](assets/spinning_disk_nbody.gif)
+![Solar System](assets/solar_system_nbody.gif)
 
-<!-- TODO: Uncomment when deployed -->
-<!-- **[Live Demo](https://your-app.onrender.com)** -->
+**[Live Demo](https://n-body-gravity-simulation.onrender.com/)** — may take a minute to start on first visit.
 
 ## Quickstart
 

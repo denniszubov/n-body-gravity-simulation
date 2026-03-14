@@ -53,11 +53,11 @@ Positions and velocities are returned to Python as NumPy views pointing directly
 
 | Preset | Description |
 |--------|-------------|
-| Galaxy Collision | Two rotating galaxies in a bound orbit, merging with tidal tails |
-| Random Disk | N bodies orbiting a central mass |
+| Galaxy Collision | Two rotating galaxies on a bound collision course |
+| Random Disk | N bodies in circular orbits around a central mass |
 | Figure-8 Three-Body | Three equal masses tracing a periodic figure-8 (Chenciner-Montgomery solution) |
-| Binary Star + Planets | Two stars in mutual orbit with circumbinary planets |
-| Solar System | The Sun and all 8 planets with real mass ratios and orbital distances |
+| Binary Star + Planets | Two stars in mutual orbit with orbiting planets at varying distances |
+| Solar System | The Sun and 8 planets with real mass ratios, sqrt-scaled distances for visibility |
 
 ## Project Structure
 
